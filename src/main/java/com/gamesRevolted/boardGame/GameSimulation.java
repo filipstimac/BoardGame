@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class GameSimulation {
+  private static final String BOARD_PATH = "src/main/resources/board.json";
+
   public static void main(String[] args) {
-    Game game = new Game();
+    Game game = new Game(BOARD_PATH);
 
     game.start();
 
@@ -15,13 +17,20 @@ public class GameSimulation {
     while (true) {
       try {
         command = reader.readLine();
-        if (command.equals("stop")) break;
-        String[] splitCommand = command.split(" ");
-        if (!game.getBoardMap().containsKey(splitCommand[0]) || !game.getBoardMap().containsKey(splitCommand[1])) {
-          System.out.println("Invalid command.");
-          continue;
+        switch (command) {
+          case "stop":
+            System.exit(0);
+          case "round":
+            game.endRound();
+            break;
+          default:
+            String[] splitCommand = command.split(" ");
+            if (!game.getBoardMap().containsKey(splitCommand[0]) || !game.getBoardMap().containsKey(splitCommand[1])) {
+              System.out.println("Invalid command.");
+              continue;
+            }
+            game.attack(splitCommand[0], splitCommand[1]);
         }
-        game.attack(splitCommand[0], splitCommand[1]);
       }
       catch (IOException e) {
         System.out.println("Not able to read console input.");

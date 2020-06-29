@@ -1,0 +1,13 @@
+[
+  {
+    "entityId" : "e1",
+    "health" : 3,
+    "attack" : 1,
+    "attackReady" : true,
+    "entityType" : 1,
+    "modifiers" : [{
+      "modifierType" : 1,
+      "value" : 1
+    }]
+  }
+]

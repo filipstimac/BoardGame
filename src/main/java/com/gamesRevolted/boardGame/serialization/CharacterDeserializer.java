@@ -38,6 +38,10 @@ public class CharacterDeserializer extends StdDeserializer<Character> {
     Character character = null;
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 
+    if (!node.has("entityId") || !node.has("health") || !node.has("attack") || !node.has("modifiers")) {
+      throw new IOException("JSON file is invalid.");
+    }
+
     int entityType = (Integer) node.get("entityType").numberValue();
     try {
       character = characterFactory.createCharacter(entityType);
@@ -56,8 +60,10 @@ public class CharacterDeserializer extends StdDeserializer<Character> {
         }
       }
       character.setModifiers(modifiers);
-      if (character instanceof Avatar) {
+      if (character instanceof Avatar && node.has("attackReady")) {
         ((Avatar) character).setAttackReady(node.get("attackReady").asBoolean());
+      } else if (character instanceof Avatar && !node.has("attackReady")) {
+        throw new IOException("JSON file is invalid.");
       }
     }
     catch (InvalidTypeException e) {

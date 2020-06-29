@@ -9,15 +9,15 @@
   } ]
 }, {
   "entityId" : "e2",
-  "health" : -1,
+  "health" : 0,
   "attack" : 1,
   "entityType" : 1,
   "modifiers" : [ ]
 }, {
   "entityId" : "e3",
-  "health" : 1,
+  "health" : 2,
   "attack" : 2,
-  "attackReady" : false,
+  "attackReady" : true,
   "entityType" : 2,
   "modifiers" : [ ]
 }, {

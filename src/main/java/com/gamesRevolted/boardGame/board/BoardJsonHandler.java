@@ -17,12 +17,11 @@ import com.gamesRevolted.boardGame.serialization.CharacterDeserializer;
 import com.gamesRevolted.boardGame.serialization.CharacterSerializer;
 
 public class BoardJsonHandler {
-
-  private final String BOARD_PATH = "src/main/resources/board.json";
-
   private ObjectMapper objectMapper;
+  private String boardPath;
 
-  public BoardJsonHandler() {
+  public BoardJsonHandler(String path) {
+    this.boardPath = path;
     this.objectMapper = new ObjectMapper();
     SimpleModule deserializerModule = new SimpleModule();
     deserializerModule.addDeserializer(Character.class, new CharacterDeserializer());
@@ -32,28 +31,18 @@ public class BoardJsonHandler {
     objectMapper.registerModule(serializerModule);
   }
 
-  public Board parseBoard() {
+  public Board parseBoard() throws IOException {
     List<Character> charactersFiltered = null;
-    try {
-      List<Character> characters = objectMapper.readValue(new File(BOARD_PATH), new TypeReference<List<Character>>(){});
-      charactersFiltered = characters.stream().filter(Objects::nonNull).collect(Collectors.toList());
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-      System.out.println("Unable to read board JSON file.");
-    }
+    List<Character> characters = objectMapper.readValue(new File(boardPath), new TypeReference<List<Character>>() {
+    });
+    charactersFiltered = characters.stream().filter(Objects::nonNull).collect(Collectors.toList());
 
     return new Board(charactersFiltered);
   }
 
-  public void saveBoard(Collection characters) {
+  public void saveBoard(Collection<Character> characters) throws IOException {
     ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-    try {
-      objectWriter.writeValue(new File("src/main/resources/boardOut.json"), characters);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-      System.out.println("Unable to save board JSON file.");
-    }
+    //TODO use variable when done
+    objectWriter.writeValue(new File("src/main/resources/boardOut.json"), characters);
   }
 }
