@@ -15,10 +15,14 @@ import org.mockito.MockitoAnnotations;
 import com.gamesRevolted.boardGame.character.Avatar;
 import com.gamesRevolted.boardGame.character.Creature;
 import com.gamesRevolted.boardGame.exception.InvalidAttackException;
+import com.gamesRevolted.boardGame.modifier.Armour;
+import com.gamesRevolted.boardGame.modifier.Vulnerability;
 
-public class AvatarTest {
-  private Avatar avatar;
+public class CreatureTest {
+  private Creature creature;
 
+  @Mock
+  public Avatar avatarMock;
   @Mock
   public Creature creatureMock;
 
@@ -31,56 +35,55 @@ public class AvatarTest {
   }
 
   @Test
-  public void testAttackAttackNotReady() throws InvalidAttackException {
-    avatar = new Avatar("e1", 2, 2, Collections.emptyList(), false);
+  public void testAttackAttackAvatar() throws InvalidAttackException {
+    creature = new Creature("e1", 2, 2, Collections.emptyList());
 
     rule.expect(InvalidAttackException.class);
-    rule.expectMessage("Avatar is not ready to attack.");
+    rule.expectMessage("Creature tried attacking avatar.");
 
-    avatar.attack(creatureMock);
+    creature.attack(avatarMock);
   }
 
   @Test
   public void testAttackItself() throws InvalidAttackException {
-    avatar = new Avatar("e1", 2, 2, Collections.emptyList(), true);
+    creature = new Creature("e1", 2, 2, Collections.emptyList());
 
     rule.expect(InvalidAttackException.class);
     rule.expectMessage("Character can't attack itself.");
 
-    avatar.attack(avatar);
+    creature.attack(creature);
   }
 
   @Test
   public void testAttacker0Health() throws InvalidAttackException {
-    avatar = new Avatar("e1", 0, 2, Collections.emptyList(), true);
+    creature = new Creature("e1", 0, 2, Collections.emptyList());
 
     rule.expect(InvalidAttackException.class);
     rule.expectMessage("Character e1 can't attack because his health is 0.");
 
-    avatar.attack(creatureMock);
+    creature.attack(creatureMock);
   }
 
   @Test
   public void testAttackTarget0Health() throws InvalidAttackException {
-    avatar = new Avatar("e1", 2, 2, Collections.emptyList(), true);
+    creature = new Creature("e1", 2, 2, Collections.emptyList());
     when(creatureMock.getHealth()).thenReturn(0);
     when(creatureMock.getEntityId()).thenReturn("e2");
 
     rule.expect(InvalidAttackException.class);
     rule.expectMessage("Character e2 can't be attacked because his health is 0.");
 
-    avatar.attack(creatureMock);
+    creature.attack(creatureMock);
   }
 
   @Test
-  public void testAttackSuccessfulNoModifiers() throws InvalidAttackException {
-    avatar = new Avatar("e1", 2, 2, Collections.emptyList(), true);
-    Creature creature = new Creature("e2", 2, 2, Collections.emptyList());
+  public void testAttackSuccessfulModifiers() throws InvalidAttackException {
+    creature = new Creature("e1", 2, 1, Collections.singletonList(new Armour(1)));
+    Creature creature2 = new Creature("e2", 2, 1, Collections.singletonList(new Vulnerability(1)));
 
-    avatar.attack(creature);
+    creature.attack(creature2);
 
-    Assert.assertEquals(0, avatar.getHealth());
-    Assert.assertFalse(avatar.isAttackReady());
-    Assert.assertEquals(0, creature.getHealth());
+    Assert.assertEquals(0, creature2.getHealth());
+    Assert.assertEquals(2, creature.getHealth());
   }
 }

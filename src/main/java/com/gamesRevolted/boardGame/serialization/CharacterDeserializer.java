@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -34,7 +33,7 @@ public class CharacterDeserializer extends StdDeserializer<Character> {
   }
 
   public Character deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)
-    throws IOException, JsonProcessingException {
+    throws IOException {
     Character character = null;
     JsonNode node = jsonParser.getCodec().readTree(jsonParser);
 

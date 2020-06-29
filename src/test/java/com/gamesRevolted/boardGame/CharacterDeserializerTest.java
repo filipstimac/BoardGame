@@ -44,12 +44,11 @@ public class CharacterDeserializerTest {
 
   @Test
   public void testSerializationFailure() throws IOException {
-    Character character = new Creature("e1", 3, 1, Collections.singletonList(new Armour(1)));
     String boardPath = "src/test/resources/testBoardInvalid.json";
     rule.expect(IOException.class);
     rule.expectMessage("JSON file is invalid.");
 
-    List<Character> characters = objectMapper.readValue(new File(boardPath), new TypeReference<List<Character>>() {
+    objectMapper.readValue(new File(boardPath), new TypeReference<List<Character>>() {
     });
   }
 }
