@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.Before;
@@ -32,7 +31,7 @@ public class GameTest {
   public BoardJsonHandler boardJsonHandler;
 
   @InjectMocks
-  private Game game = new Game("mock");
+  private Game game = new Game("mocked");
 
   private Avatar avatar;
   private Creature creature;
@@ -57,9 +56,9 @@ public class GameTest {
 
   @Test
   public void testAttack() throws IOException {
-    game.setBoardMap(board.getCharacters().stream()
-      .collect(Collectors.toMap(Character::getEntityId, character -> character)));
-    doNothing().when(boardJsonHandler).saveBoard(any(List.class));
+    game.setBoardMap(
+      board.getCharacters().stream().collect(Collectors.toMap(Character::getEntityId, character -> character)));
+    doNothing().when(boardJsonHandler).saveBoard(any(Collection.class));
 
     game.attack("e1", "e2");
 

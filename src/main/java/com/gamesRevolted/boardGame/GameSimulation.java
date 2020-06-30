@@ -18,7 +18,7 @@ public class GameSimulation {
       try {
         command = reader.readLine();
         switch (command) {
-          case "stop":
+          case "end":
             System.exit(0);
           case "round":
             game.endRound();

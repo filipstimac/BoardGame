@@ -42,7 +42,6 @@ public class BoardJsonHandler {
 
   public void saveBoard(Collection<Character> characters) throws IOException {
     ObjectWriter objectWriter = objectMapper.writer(new DefaultPrettyPrinter());
-    //TODO use variable when done
-    objectWriter.writeValue(new File("src/main/resources/boardOut.json"), characters);
+    objectWriter.writeValue(new File(boardPath), characters);
   }
 }

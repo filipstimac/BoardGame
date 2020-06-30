@@ -35,7 +35,7 @@ public class Game {
       boardMap = board.getCharacters().stream()
         .collect(Collectors.toMap(Character::getEntityId, character -> character));
       System.out.println("Game initialized.");
-      System.out.println(boardMap.values());
+      System.out.println("State: " + boardMap.values());
     }
     catch (IOException e) {
       System.out.println("Not able to read JSON file.");
@@ -52,7 +52,7 @@ public class Game {
         "EntityAttackedMessage: " + character1.getEntityId() + " " + character2.getEntityId() + " " + character1
           .getAttack());
       //TODO remove when done
-      System.out.println(boardMap.values());
+      System.out.println("State: " + boardMap.values());
     }
     catch (InvalidAttackException e) {
       System.out.println(e.getMessage());
