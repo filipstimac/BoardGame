@@ -22,8 +22,8 @@ public class Avatar extends Character {
     if (!attackReady) {
       throw new InvalidAttackException("Avatar is not ready to attack.");
     } else {
-      attackReady = false;
       super.attack(character);
+      attackReady = false;
     }
   }
 
