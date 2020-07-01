@@ -39,6 +39,7 @@ public class Game {
     }
     catch (IOException e) {
       System.out.println("Not able to read JSON file.");
+      System.exit(0);
     }
   }
 
